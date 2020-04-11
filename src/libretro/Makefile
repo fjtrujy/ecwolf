@@ -131,15 +131,15 @@ else ifeq ($(platform), emscripten)
    SHARED := -shared -Wl,--version-script=$(CORE_DIR)/link.T -Wl,--no-undefined
    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
 else ifeq ($(platform), ps2)
-   TARGET := $(TARGET_NAME)_ps2.a
-   CC = ee-gcc
-   CXX = ee-g++
-   AR = ee-ar
-   COMMON_CFLAGS += -DPS2 -G0 -D__sun
+   TARGET := $(TARGET_NAME)_$(platform).a
+   CC = mips64r5900el-ps2-elf-gcc
+   CXX = mips64r5900el-ps2-elf-g++
+   AR = mips64r5900el-ps2-elf-ar
+   COMMON_CFLAGS += -DPS2 -G0
    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
    STATIC_LINKING = 1
 else ifeq ($(platform), psp1)
-   TARGET := $(TARGET_NAME)_libretro_psp1.a
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
    CC = psp-gcc
    CXX = psp-g++
    AR = psp-ar
@@ -148,7 +148,7 @@ else ifeq ($(platform), psp1)
    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
    STATIC_LINKING = 1
 else ifeq ($(platform), vita)
-   TARGET := $(TARGET_NAME)_libretro_vita.a
+   TARGET := $(TARGET_NAME)_libretro_$(platform).a
    CC = arm-vita-eabi-gcc
    CXX = arm-vita-eabi-g++
    AR = arm-vita-eabi-ar
@@ -231,7 +231,7 @@ LDFLAGS += $(LIBM)
 ifeq ($(DEBUG), 1)
    COMMON_CFLAGS += -O0 -g -DDEBUG
 else
-   COMMON_CFLAGS += -O2
+   COMMON_CFLAGS += -O3
 endif
 
 include Makefile.common
